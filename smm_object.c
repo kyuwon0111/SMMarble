@@ -7,26 +7,12 @@
 
 #include "smm_common.h"
 #include "smm_object.h"
+#include <stdlib.h>
 #include <string.h>
 
 #define MAX_NODENR      100
 #define MAX_NODETYPE    7
 
-
-
-#define GRADE_A+        0
-#define GRADE_A0        1
-#define GRADE_A-        2
-#define GRADE_B+        3
-#define GRADE_B0        4
-#define GRADE_B-        5
-#define GRADE_C+        6
-#define GRADE_C0        7
-#define GRADE_C-        8
-#define GRADE_D+        9
-#define GRADE_D0        10
-#define GRADE_D-        11
-#define GRADE_F         12
 
 static char smmObj_nodeName[MAX_NODETYPE][MAX_CHARNAME] = {
 	"lecture",
@@ -38,7 +24,7 @@ static char smmObj_nodeName[MAX_NODETYPE][MAX_CHARNAME] = {
 	"festival"
 };
 
-static char smmObj_gradeName[MAX_GRADE][MAX_CHARNAME] = {
+static char smmObj_gradeName[SMMNODE_MAX_GRADE][MAX_CHARNAME] = {
 	"A+",
 	"A0",
 	"A-",
@@ -91,13 +77,25 @@ char* smmObj_getObjectName(void *ptr)
 	
 	return (objPtr->name);
 }
-int smmObj_getObjectType(int node_nr)
+int smmObj_getNodeType(void *ptr)
 {
-	return (smmObj_board[node_nr].type);
+	smmObj_object_t* objPtr = (smmObj_object_t*) ptr;
+	return (objPtr->type);
 }
-int smmObj_getObjectCredit(int node_nr)
+int smmObj_getNodeCredit(void *ptr)
 {
-	return (smmObj_board[node_nr].credit);
+	smmObj_object_t* objPtr = (smmObj_object_t*) ptr;
+	return (objPtr->credit);
+}
+int smmObj_getNodeEnergy(void *ptr)
+{
+	smmObj_object_t* objPtr = (smmObj_object_t*) ptr;
+	return (objPtr->energy);
+}
+int smmObj_getObjectCredit(void *ptr)
+{
+	smmObj_object_t* objPtr = (smmObj_object_t*) ptr;
+	return (objPtr->credit);
 }
 int smmObj_getObjectEnergy(void *ptr)
 {
@@ -105,13 +103,16 @@ int smmObj_getObjectEnergy(void *ptr)
 	
 	return (objPtr->energy);
 }
+int smmObj_getObjectGrade(void *ptr)
+{
+	smmObj_object_t* objPtr = (smmObj_object_t*) ptr;
+	return (objPtr->grade);
+}
 char* smmObj_getTypeName(int node_type)
 {
 	return (smmObj_nodeName[node_type]);
 }
-#if 0
-char* smmObj_getGradeName(smmGrade_e grade)
+char* smmObj_getGradeName(int grade)
 {
-    return smmGradeName[grade];
+	return (smmObj_gradeName[grade]);
 }
-#endif
